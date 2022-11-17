@@ -1,9 +1,9 @@
+import 'package:fashion_kart/domain/entity/cart_entity.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
 import '../provider/product_provider.dart';
 
 class CustomGridview extends StatefulWidget {
-
   const CustomGridview({
     Key? key,
     required this.data,
@@ -19,7 +19,6 @@ class _CustomGridviewState extends State<CustomGridview> {
   bool toggleCartIcon = false;
   List<bool>? addedList = [];
 
-
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -33,10 +32,11 @@ class _CustomGridviewState extends State<CustomGridview> {
           crossAxisCount: 2,
         ),
         itemBuilder: (context, index) {
-          List<String> words = widget.data.getProductList[index].title!.split(" ");
+          List<String> words =
+              widget.data.getProductList[index].title!.split(" ");
           String productTitle = words[0];
           double price = widget.data.getProductList[index].price!;
-          
+
           addedList!.add(false);
 
           return Column(
@@ -47,7 +47,8 @@ class _CustomGridviewState extends State<CustomGridview> {
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(widget.data.getProductList[index].image!),
+                      image: NetworkImage(
+                          widget.data.getProductList[index].image!),
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -80,7 +81,7 @@ class _CustomGridviewState extends State<CustomGridview> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                           Text(
+                          Text(
                             "\$ $price",
                             style: const TextStyle(
                               fontSize: Constants.size16,
@@ -88,14 +89,23 @@ class _CustomGridviewState extends State<CustomGridview> {
                             ),
                           ),
                           GestureDetector(
-                            child: addedList!.elementAt(index) ? const Icon(Icons.shopping_bag): const ImageIcon(
+                            child: addedList!.elementAt(index)
+                                ? const Icon(Icons.shopping_bag)
+                                : const ImageIcon(
                                     AssetImage("assets/bag.png"),
-                            ),
-                            onTap: (){
+                                  ),
+                            onTap: () {
                               setState(() {
-                                addedList![index] = addedList![index] == false ? true : false;
+                                addedList![index] =
+                                    addedList![index] == false ? true : false;
                               });
-                              widget.data.addToCart(widget.data.getProductList[index].image!);
+                              widget.data.addToCart(
+                                CartEntity(
+                                    imageUrl: widget
+                                        .data.getProductList[index].image!,
+                                    price: price,
+                                    quantity: 1),
+                              );
                             },
                           ),
                         ],

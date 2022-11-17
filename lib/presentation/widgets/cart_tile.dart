@@ -1,13 +1,11 @@
+import 'package:fashion_kart/domain/entity/cart_entity.dart';
 import 'package:fashion_kart/presentation/constants.dart';
 import 'package:fashion_kart/presentation/provider/product_provider.dart';
 import 'package:flutter/material.dart';
 
 class CartTile extends StatelessWidget {
-  const CartTile({
-    Key? key,
-    required this.data,
-    required this.index
-  }) : super(key: key);
+  const CartTile({Key? key, required this.data, required this.index})
+      : super(key: key);
 
   final ProductProvider data;
   final int index;
@@ -24,7 +22,7 @@ class CartTile extends StatelessWidget {
                 height: 80,
                 width: 80,
                 child: Image.network(
-                  data.getCartList[index],
+                  data.getCartList[index].imageUrl!,
                   fit: BoxFit.fill,
                 ),
               ),
@@ -36,10 +34,9 @@ class CartTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
                           "Me Bandage Black Dress",
                           style: TextStyle(
                             fontSize: Constants.size12,
@@ -47,8 +44,8 @@ class CartTile extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "\$69.00",
-                          style: TextStyle(
+                          "\$ ${data.getCartList[index].totalPrice}",
+                          style: const TextStyle(
                             fontSize: Constants.size14,
                             fontWeight: Constants.boldText,
                           ),
@@ -56,8 +53,7 @@ class CartTile extends StatelessWidget {
                       ],
                     ),
                     Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text("Size: S"),
                         Row(
@@ -71,52 +67,36 @@ class CartTile extends StatelessWidget {
                               width: 14,
                               decoration: BoxDecoration(
                                 color: Colors.black,
-                                borderRadius:
-                                    BorderRadius.circular(4.0),
+                                borderRadius: BorderRadius.circular(4.0),
                               ),
                             )
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              height: 24,
-                              width: 24,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color:
-                                      const Color(0xffAFBEC4),
-                                ),
+                        Align(
+                          alignment: FractionalOffset.bottomCenter,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ItemCounter(
+                                icon: Icons.remove,
+                                entity: data.getCartList[index],
+                                data: data,
                               ),
-                              child: const Icon(
-                                Icons.remove,
-                                size: 8,
+                              const SizedBox(
+                                width: 14,
                               ),
-                            ),
-                            const SizedBox(
-                              width: 14,
-                            ),
-                            const Text("1"),
-                            const SizedBox(
-                              width: 14,
-                            ),
-                            Container(
-                              height: 24,
-                              width: 24,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color:
-                                      const Color(0xffAFBEC4),
-                                ),
+                              Text(
+                                  "${data.getCartList[index].quantity}"),
+                              const SizedBox(
+                                width: 14,
                               ),
-                              child: const Icon(
-                                Icons.add,
-                                size: 8,
+                              ItemCounter(
+                                icon: Icons.add,
+                                entity: data.getCartList[index],
+                                data: data,
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         )
                       ],
                     )
@@ -133,6 +113,44 @@ class CartTile extends StatelessWidget {
           color: Color(0xffAFBEC4),
         )
       ],
+    );
+  }
+}
+
+class ItemCounter extends StatelessWidget {
+  final IconData? icon;
+  final CartEntity? entity;
+  final ProductProvider? data;
+  const ItemCounter({
+    Key? key,
+    this.icon,
+    this.entity,
+    this.data,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        if (icon == Icons.remove) {
+          data!.decrementItemCounter(entity!);
+        } else {
+          data!.incrementItemCounter(entity!);
+        }
+      },
+      child: Container(
+        height: 24,
+        width: 24,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: const Color(0xffAFBEC4),
+          ),
+        ),
+        child: Icon(
+          icon,
+          size: 8,
+        ),
+      ),
     );
   }
 }

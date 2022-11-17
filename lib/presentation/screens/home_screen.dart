@@ -20,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     final data = Provider.of<ProductProvider>(context, listen: false);
     data.getProductEntity();
+    data.checkConnection();
     super.initState();
   }
 

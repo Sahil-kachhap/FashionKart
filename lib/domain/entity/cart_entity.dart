@@ -1,6 +1,10 @@
-class CartEntity{
+class CartEntity {
   final String? imageUrl;
-  final double? price;
+  double? price;
+  int? quantity;
+  double? totalPrice;
 
-  CartEntity({required this.imageUrl,required this.price});
+  CartEntity(
+      {required this.imageUrl, required this.price, required this.quantity})
+      : totalPrice = price;
 }

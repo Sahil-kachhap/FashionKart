@@ -23,52 +23,103 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     final data = Provider.of<ProductProvider>(context);
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 56.0, bottom: 72.0),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.arrow_back_ios),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 56.0, bottom: 72.0),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.arrow_back_ios),
+                        ),
+                        const SizedBox(
+                          width: 112.25,
+                        ),
+                        const Text(
+                          "Your Cart",
+                          style: TextStyle(
+                              fontSize: Constants.size16,
+                              fontWeight: Constants.boldText),
+                        ),
+                      ],
                     ),
-                    const SizedBox(
-                      width: 112.25,
-                    ),
-                    const Text(
-                      "Your Cart",
-                      style: TextStyle(
-                          fontSize: Constants.size16,
-                          fontWeight: Constants.boldText),
-                    ),
-                  ],
-                ),
-              ),
-              ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: data.getCartList.length,
-                  itemBuilder: (context, index) {
-                    return CartTile(data: data, index: index,);
-                  }),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text("Total Price"),
-                  Text("\$ 215"),
+                  ),
+                  ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: data.getCartList.length,
+                      itemBuilder: (context, index) {
+                        return CartTile(
+                          data: data,
+                          index: index,
+                        );
+                      }),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            bottom: 40,
+            child: Column(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Total Price",
+                          style: TextStyle(
+                              fontSize: Constants.size16,
+                              fontWeight: Constants.boldText),
+                        ),
+                        Text(
+                          "\$ ${data.totalPrice.toStringAsFixed(2)}",
+                          style: const TextStyle(
+                            fontSize: Constants.size24,
+                            fontWeight: Constants.boldText,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 16.0,
+                ),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: Constants.size16,
+                        fontWeight: Constants.boldText,
+                      ),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(6),
+                        ),
+                      ),
+                      minimumSize: const Size(327, 64)),
+                  child: const Text("Payment"),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
 }
-
