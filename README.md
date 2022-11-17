@@ -2,6 +2,11 @@
 
 A new Flutter project.
 
+## Screenshots
+<img src="assets/screen-1.png" width="250">
+<img src="assets/screen-2.png" width="250">
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
